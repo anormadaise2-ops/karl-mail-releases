@@ -33,7 +33,7 @@
         <h1>Vos messages.<br><span class="gradient">À votre façon.</span></h1>
         <p class="lead">Découvrez Karl Mail, une expérience de messagerie moderne pour Windows. Une interface soignée, une navigation fluide et vos échanges réunis au même endroit.</p>
         <div class="actions">
-          <a class="button primary" id="downloadBtn" href="https://github.com/anormadaise2-ops/karl-mail-releases/releases" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 16v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="downloadText">Vérification de la version…</span></a>
+          <a class="button primary" id="downloadBtn" href="https://github.com/anormadaise2-ops/karl-mail-releases/releases/latest/download/Karl-Mail-Setup.exe" target="_self" rel="noopener"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 16v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="downloadText">Vérification de la version…</span></a>
           <a class="button secondary" href="https://github.com/anormadaise2-ops/karl-mail-releases/releases" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 7h11M8 12h11M8 17h11M4 7h.01M4 12h.01M4 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Toutes les versions</a>
         </div>
         <p class="fineprint" id="fineprint">Windows 10/11 · Installateur .exe · Le téléchargement est disponible lorsqu’une version est publiée.</p>
@@ -60,7 +60,7 @@
         <article class="card"><div class="cardicon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 11a8 8 0 0 0-14.8-4L4 9m0-5v5h5M4 13a8 8 0 0 0 14.8 4L20 15m0 5v-5h-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Versions au même endroit</h3><p>Consultez les publications GitHub pour connaître les versions disponibles et leurs notes de mise à jour.</p></article>
       </div>
     </section>
-    <section class="bottom-cta"><div><h2>Prêt à installer Karl Mail ?</h2><p id="ctaText">La page vérifiera ici la dernière version publiée, dès qu'un installateur sera disponible.</p></div><a class="button primary" id="bottomDownload" href="https://github.com/anormadaise2-ops/karl-mail-releases/releases" target="_blank" rel="noopener"><span id="bottomDownloadText">Voir les versions</span><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></section>
+    <section class="bottom-cta"><div><h2>Prêt à installer Karl Mail ?</h2><p id="ctaText">La page vérifiera ici la dernière version publiée, dès qu'un installateur sera disponible.</p></div><a class="button primary" id="bottomDownload" href="https://github.com/anormadaise2-ops/karl-mail-releases/releases/latest/download/Karl-Mail-Setup.exe" target="_self" rel="noopener"><span id="bottomDownloadText">Télécharger maintenant</span><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></section>
   </main>
   <footer class="wrap footer"><span>© <span id="year"></span> Karl Mail · Site de téléchargement</span><span>Distribution Windows via <a href="https://github.com/anormadaise2-ops/karl-mail-releases/releases" target="_blank" rel="noopener">GitHub Releases</a></span><span class="mono" id="versionLabel">VERSION : EN VÉRIFICATION</span></footer>
   <script>
@@ -68,6 +68,7 @@
       const owner='anormadaise2-ops';
       const repo='karl-mail-releases';
       const releasePage=`https://github.com/${owner}/${repo}/releases`;
+      const stableDownload=`https://github.com/${owner}/${repo}/releases/latest/download/Karl-Mail-Setup.exe`;
       const latestApi=`https://api.github.com/repos/${owner}/${repo}/releases/latest`;
       const downloadBtn=document.getElementById('downloadBtn');
       const bottomDownload=document.getElementById('bottomDownload');
@@ -81,27 +82,27 @@
       const ctaText=document.getElementById('ctaText');
       const versionLabel=document.getElementById('versionLabel');
       const setFallback=(message,kind='pending')=>{
-        downloadBtn.href=releasePage;
-        downloadBtn.target='_blank';
-        downloadBtn.setAttribute('aria-disabled','true');
-        downloadText.textContent='Téléchargement bientôt disponible';
-        bottomDownload.href=releasePage;
-        bottomDownloadText.textContent='Voir les versions';
+        // Le lien stable fonctionne dès qu'une release publique contient Karl-Mail-Setup.exe.
+        downloadBtn.href=stableDownload;
+        downloadBtn.target='_self';
+        downloadBtn.removeAttribute('aria-disabled');
+        downloadText.textContent='Télécharger pour Windows';
+        bottomDownload.href=stableDownload;
+        bottomDownload.target='_self';
+        bottomDownloadText.textContent='Télécharger maintenant';
         releaseStatus.textContent=message;
         statusDot.className='statusdot'+(kind==='error'?' bad':'');
-        navStatus.textContent='Versions à vérifier';
-        navDot.style.background=kind==='error'?'#ff8b9b':'#f3c66b';
-        fineprint.textContent='Le lien de téléchargement s’activera lorsqu’un fichier .exe sera publié dans une GitHub Release.';
-        ctaText.textContent='Aucun installateur détecté pour le moment. Consultez les versions publiées sur GitHub.';
-        versionLabel.textContent='VERSION : NON PUBLIÉE';
+        navStatus.textContent=kind==='error'?'Téléchargement direct disponible':'Lien direct prêt';
+        navDot.style.background=kind==='error'?'#ff8b9b':'var(--green)';
+        fineprint.textContent='Lien direct : dernière version Windows publiée sur GitHub Releases.';
+        ctaText.textContent='Le bouton télécharge le dernier installateur public dès qu’une release est publiée.';
+        versionLabel.textContent='VERSION : VIA GITHUB RELEASES';
       };
-      const openReleases=()=>{ window.open(releasePage,'_blank','noopener'); };
-      downloadBtn.addEventListener('click',e=>{ if(downloadBtn.getAttribute('aria-disabled')==='true'){ e.preventDefault(); openReleases(); }});
       fetch(latestApi,{headers:{'Accept':'application/vnd.github+json'},cache:'no-store'})
         .then(async response=>{ if(!response.ok) throw new Error(response.status===404?'Aucune version publiée pour le moment.':'GitHub a répondu '+response.status+'.'); return response.json(); })
         .then(release=>{
           const assets=Array.isArray(release.assets)?release.assets:[];
-          const installer=assets.find(a=>/\.exe$/i.test(a.name)&&!/uninstall|blockmap/i.test(a.name));
+          const installer=assets.find(a=>a.name==='Karl-Mail-Setup.exe')||assets.find(a=>/\.exe$/i.test(a.name)&&!/uninstall|blockmap/i.test(a.name));
           const version=release.tag_name||release.name||'Version disponible';
           if(!installer){ setFallback(`La version ${version} existe, mais aucun installateur .exe n’a été trouvé dans ses fichiers.`); versionLabel.textContent=`VERSION : ${version.toUpperCase()}`; return; }
           downloadBtn.href=installer.browser_download_url;
